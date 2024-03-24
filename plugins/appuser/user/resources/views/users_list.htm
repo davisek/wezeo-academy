@@ -1,0 +1,39 @@
+<!-- _list.htm -->
+<div class="container">
+    <h2>List of Users</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+                <form action="{{ url('admin/appuser/user/users/update', { id: user.id }) }}" method="post">
+                    {{ form_token() }}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">Password Confirmation</label>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

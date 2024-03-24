@@ -1,0 +1,21 @@
+fields:
+    id:
+        label: ID
+        span: full
+        disabled: true
+        readOnly: 1
+        type: text
+    username:
+        label: Username
+        span: auto
+        required: 1
+        type: text
+    password:
+        label: Password
+        span: auto
+        required: 1
+        type: password
+    password_confirmation:
+        label: 'Password Confirm'
+        span: auto
+        type: password
