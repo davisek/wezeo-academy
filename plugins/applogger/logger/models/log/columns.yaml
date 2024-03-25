@@ -5,4 +5,18 @@
 columns:
     id:
         label: ID
+        type: number
         searchable: true
+    datum_prichodu:
+        label: Dátum príchodu
+        type: datetime
+        searchable: true
+    user_id:
+        label: Užívateľ ID
+        type: number
+        searchable: true
+    meskanie:
+        label: Meskanie
+        type: number
+        searchable: false
+

@@ -5,4 +5,18 @@
 fields:
     id:
         label: ID
-        disabled: true
+        type: number
+        readOnly: true
+        span: row
+        spanClass: col-1
+    datum_prichodu:
+        label: Dátum príchodu
+        type: datepicker
+        span: row
+        spanClass: col-6
+    meskanie:
+        label: Meskanie
+        type: number
+        span: row
+        spanClass: col-5
+        comment: Zadajte mesačné záznamy

@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest {
     {
         $response = response()->json([
             'success' => false,
-            'errors' => $validator->errors()
+            'errors' => 'Provided email address or password is incorrect!'
         ], 422);
 
         throw new HttpResponseException($response);

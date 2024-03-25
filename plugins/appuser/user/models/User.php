@@ -24,7 +24,17 @@ class User extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'username' => 'required|string|unique:appuser_user_users,username',
+        'password' => 'required|string|min:8'
+    ];
+
+    public function beforeSave()
+    {
+        if ($this->isDirty('password')) {
+            $this->password = bcrypt($this->password);
+        }
+    }
 
     public function logs() {
         return $this->hasMany(Log::class);

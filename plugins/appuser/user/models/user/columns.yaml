@@ -6,8 +6,10 @@ columns:
         sortable: true
     username:
         label: Username
+        searchable: true
+        sortable: true
         type: text
     password:
         label: Password
         type: text
-        invisible: false
+        invisible: true

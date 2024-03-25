@@ -12,7 +12,7 @@ class Log extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    protected $fillable = ['datum_prichodu', 'meno_uzivatela', 'meskanie'];
+    protected $fillable = ['datum_prichodu', 'user_id', 'meskanie'];
 
     /**
      * @var string table name
@@ -24,10 +24,12 @@ class Log extends Model
      */
     public $rules = [
         'datum_prichodu' => 'required|date',
-        'meskanie' => 'required|numeric'
+        'meskanie' => 'required|numeric',
+        'user_id' => 'required'
     ];
 
-    public function user() {
+    public function user(): \October\Rain\Database\Relations\BelongsTo
+    {
         return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -71,13 +71,11 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        return []; // Remove this line to activate
-
         return [
             'logger' => [
-                'label' => 'Logger',
-                'url' => Backend::url('applogger/logger/mycontroller'),
-                'icon' => 'icon-leaf',
+                'label' => 'Logs',
+                'url' => Backend::url('applogger/logger/logs'),
+                'icon' => 'icon-clock',
                 'permissions' => ['applogger.logger.*'],
                 'order' => 500,
             ],

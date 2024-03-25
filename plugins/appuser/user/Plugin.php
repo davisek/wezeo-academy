@@ -107,21 +107,11 @@ class Plugin extends PluginBase
 
         return [
             'user' => [
-                'label' => 'User',
+                'label' => 'Users',
                 'url' => Backend::url('appuser/user/users'),
-                'icon' => 'icon-leaf',
-                'permissions' => ['appuser.user.*'],
+                'icon' => 'icon-user-account',
+                'permissions' => ['appuser.user.users_access'],
                 'order' => 500,
-
-                // Submenu items
-                'sideMenu' => [
-                    'users' => [
-                        'label'       => 'Manage Users',
-                        'icon'        => 'icon-user',
-                        'url'         => Backend::url('appuser/user/users'),
-                        'permissions' => ['appuser.user.access_users'],
-                    ],
-                ]
             ],
         ];
     }

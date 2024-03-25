@@ -10,13 +10,10 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::post('login', [AuthController::class, 'login']);
 
     Route::group(['middleware' => CheckAuth::class], function () {
-        //Route::get('users', [UsersController::class, 'index']);
+        Route::get('users', [UsersController::class, 'index']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('users/{id}/change-password', [UsersController::class, 'changePassword']);
     });
 
 });
-Route::group(['prefix' => 'admin/appuser/user'], function () {
-    Route::resource('users', 'AppUser\User\Http\Controllers\UsersController');
-    Route::post('users/update/{id}', [UsersController::class, 'update'])->name('appuser.user.users.update');
-});
+

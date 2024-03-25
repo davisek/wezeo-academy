@@ -44,6 +44,9 @@ class AuthController extends Controller {
                 'token' => $user->token,
             ]);
         }
+        return response([
+            'message' => 'Provided email address or password is incorrect!'
+        ], 422);
     }
 
     public function logout(Request $request) {
