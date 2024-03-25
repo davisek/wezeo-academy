@@ -39,8 +39,8 @@ class LogController extends Controller {
     }
 
     // Vracanie Logov vybraného užívateľa
-    public function userLogs($user) {
-        $logs = Log::where('meno_uzivatela', $user)->get();
+    public function userLogs($user_id) {
+        $logs = Log::where('user_id', $user_id)->get();
 
         return Response::json($logs);
     }
