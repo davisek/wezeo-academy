@@ -1,4 +1,5 @@
-<?php Block::put('breadcrumb') ?>
+<?php if (BackendAuth::userHasAccess('applogger.logger.manage_logs')): ?>
+    <?php Block::put('breadcrumb') ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?= Backend::url('applogger/logger/logs') ?>">Logs</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?= e($this->pageTitle) ?></li>
@@ -67,4 +68,7 @@
         </a>
     </p>
 
+<?php endif ?>
+<?php else: ?>
+    <h1>Na toto nemáte povolenie!</h1>
 <?php endif ?>

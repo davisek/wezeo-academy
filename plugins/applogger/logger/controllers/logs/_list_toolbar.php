@@ -6,8 +6,9 @@
 <!--        --><?php //= __("New :name", ['name' => 'Log']) ?>
 <!--    </a>-->
 
-    <div class="toolbar-divider"></div>
+<!--    <div class="toolbar-divider"></div>-->
 
+    <?php if (BackendAuth::userHasAccess('applogger.logger.manage_logs')): ?>
     <button
         class="btn btn-secondary"
         data-request="onDelete"
@@ -19,4 +20,6 @@
         <i class="icon-delete"></i>
         <?= __("Delete") ?>
     </button>
+    <?php endif ?>
+
 </div>

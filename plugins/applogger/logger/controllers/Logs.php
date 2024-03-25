@@ -28,7 +28,7 @@ class Logs extends Controller
     /**
      * @var array required permissions
      */
-    public $requiredPermissions = ['applogger.logger.logs'];
+    public $requiredPermissions = ['applogger.logger.*'];
 
     /**
      * __construct the controller

@@ -56,12 +56,18 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        return []; // Remove this line to activate
-
         return [
-            'applogger.logger.some_permission' => [
+            'applogger.logger.access_logs' => [
                 'tab' => 'Logger',
-                'label' => 'Some permission'
+                'label' => 'View the Logs',
+                'roles' => ['admin', 'publisher']
+
+            ],
+            'applogger.logger.manage_logs' => [
+                'tab' => 'Logger',
+                'label' => 'Manage the Logs',
+                'roles' => ['admin']
+
             ],
         ];
     }

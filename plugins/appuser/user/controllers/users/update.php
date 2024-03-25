@@ -1,3 +1,4 @@
+<?php if (BackendAuth::userHasAccess('appuser.user.manage_users')): ?>
 <?php Block::put('breadcrumb') ?>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="<?= Backend::url('appuser/user/users') ?>">Users</a></li>
@@ -67,4 +68,7 @@
         </a>
     </p>
 
+<?php endif ?>
+<?php else: ?>
+    <h1>Na toto nemáte povolenie!</h1>
 <?php endif ?>

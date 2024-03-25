@@ -1,4 +1,4 @@
-<!--<div data-control="toolbar loader-container">-->
+<div data-control="toolbar loader-container">
 <!--    <a-->
 <!--        href="--><?php //= Backend::url('appuser/user/users/create') ?><!--"-->
 <!--        class="btn btn-primary">-->
@@ -7,16 +7,19 @@
 <!--    </a>-->
 
 <!--    <div class="toolbar-divider"></div>-->
-<!---->
-<!--    <button-->
-<!--        class="btn btn-secondary"-->
-<!--        data-request="onDelete"-->
-<!--        data-request-message="--><?php //= __("Deleting...") ?><!--"-->
-<!--        data-request-confirm="--><?php //= __("Are you sure?") ?><!--"-->
-<!--        data-list-checked-trigger-->
-<!--        data-list-checked-request-->
-<!--        disabled>-->
-<!--        <i class="icon-delete"></i>-->
-<!--        --><?php //= __("Delete") ?>
-<!--    </button>-->
-<!--</div>-->
+
+    <?php if (BackendAuth::userHasAccess('appuser.user.manage_users')): ?>
+    <button
+        class="btn btn-secondary"
+        data-request="onDelete"
+        data-request-message="<?= __("Deleting...") ?>"
+        data-request-confirm="<?= __("Are you sure?") ?>"
+        data-list-checked-trigger
+        data-list-checked-request
+        disabled>
+        <i class="icon-delete"></i>
+        <?= __("Delete") ?>
+    </button>
+    <?php endif ?>
+
+</div>

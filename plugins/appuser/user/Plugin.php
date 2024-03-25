@@ -88,12 +88,16 @@ class Plugin extends PluginBase
      */
     public function registerPermissions()
     {
-        //return []; // Remove this line to activate
-
         return [
             'appuser.user.access_users' => [
                 'tab' => 'User',
-                'label' => 'Access Users'
+                'label' => 'View the users.',
+                'roles' => ['admin', 'publisher']
+            ],
+            'appuser.user.manage_users' => [
+                'tab' => 'User',
+                'label' => 'Manage the users.',
+                'roles' => ['admin']
             ],
         ];
     }
@@ -110,7 +114,7 @@ class Plugin extends PluginBase
                 'label' => 'Users',
                 'url' => Backend::url('appuser/user/users'),
                 'icon' => 'icon-user-account',
-                'permissions' => ['appuser.user.users_access'],
+                'permissions' => ['appuser.user.access_users'],
                 'order' => 500,
             ],
         ];

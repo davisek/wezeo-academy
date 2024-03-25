@@ -28,7 +28,7 @@ class Users extends Controller
     /**
      * @var array required permissions
      */
-    public $requiredPermissions = ['appuser.user.users_access'];
+    public $requiredPermissions = ['appuser.user.*'];
 
     /**
      * __construct the controller
