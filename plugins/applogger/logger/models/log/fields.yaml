@@ -9,14 +9,19 @@ fields:
         readOnly: true
         span: row
         spanClass: col-1
-    datum_prichodu:
-        label: Dátum príchodu
+    user:
+        label: User
+        type: relation
+        nameFrom: username
+        span: row
+        spanClass: col-4
+    arrival_date:
+        label: Arrival Date
         type: datepicker
         span: row
-        spanClass: col-6
-    meskanie:
-        label: Meskanie
+        spanClass: col-4
+    delay:
+        label: Delay
         type: number
         span: row
-        spanClass: col-5
-        comment: Zadajte mesačné záznamy
+        spanClass: col-3

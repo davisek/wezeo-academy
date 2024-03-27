@@ -15,7 +15,3 @@ fields:
         label: Password
         span: auto
         type: password
-        validation:
-            rules:
-                - required
-                - min:8

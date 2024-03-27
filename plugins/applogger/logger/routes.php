@@ -1,11 +1,12 @@
 <?php
 use AppUser\User\Http\Middleware\CheckAuth;
+use AppLogger\Logger\Http\Controllers\LogController;
 
-Route::prefix('api')->group(function () {
-    Route::post('/log', 'AppLogger\Logger\Controllers\LogController@store')->middleware(CheckAuth::class);
-    Route::get('/logs', 'AppLogger\Logger\Controllers\LogController@index')->middleware(CheckAuth::class);
+Route::group(['prefix' => 'api'], function () {
+    Route::post('log', [LogController::class, 'store'])->middleware(CheckAuth::class);
+    Route::get('logs', [LogController::class, 'index'])->middleware(CheckAuth::class);
 
-    Route::get('/logs/arrival', 'AppLogger\Logger\Controllers\LogController@checkArrival');
-    Route::get('/logs/{user}', 'AppLogger\Logger\Controllers\LogController@userLogs');
+    Route::get('logs/arrival', [LogController::class, 'checkArrival']);
+    Route::get('logs/{user}', [LogController::class, 'userLogs']);
 });
 

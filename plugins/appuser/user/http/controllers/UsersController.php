@@ -4,27 +4,31 @@ namespace AppUser\User\Http\Controllers;
 use AppUser\User\Http\Requests\StoreUserRequest;
 use AppUser\User\Http\Resources\UserResource;
 use AppUser\User\Models\User;
+use AppUser\User\Services\AuthService;
 use Illuminate\Routing\Controller;
 use BackendMenu;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller {
-    public function store(StoreUserRequest  $request) {
-        $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
 
-        $user = User::create($data);
-        return response(new UserResource($user), 201);
+    public function index() {
+        return  User::where('id', '!=', AuthService::getUser()->id)->get();
     }
 
-    public function changePassword(Request $request, $id) {
+    public function store(StoreUserRequest  $request) {
+        $data = $request->validated();
+        $user = User::create($data);
+        return new UserResource($user);
+    }
+
+    public function changePassword(Request $request) {
+        $user = AuthService::getUser();
         $request->validate([
             'password' => 'required|string|min:8|confirmed'
         ]);
-        $user = User::findOrFail($id);
-        $user->password = bcrypt($request->input('password'));
+        $user->password = $request->input('password');
         $user->save();
 
-        return response()->json(['message' => 'Password was successfully changed.']);
+        return ['message' => 'Password was successfully changed.'];
     }
 }

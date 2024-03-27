@@ -14,57 +14,48 @@ class AuthController extends Controller {
 
     public function register(RegisterRequest $request) {
         $data = $request->validated();
-        $data['password'] = bcrypt($data['password']);
 
         $user = User::create($data);
 
         $user->token = Str::random(60);
         $user->save();
 
-        return response()->json([
+        return [
             'message' => 'Registration successful',
             'token' => $user->token,
-        ]);
+        ];
     }
 
     public function login(LoginRequest $request) {
         $credentials = $request->validated();
+        $user = User::where('username', $credentials['username'])->first();
 
-        if (!$user = User::where('username', $credentials['username'])->first()) {
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
             return response([
                 'message' => 'Provided email address or password is incorrect!'
             ], 422);
         }
 
-        if ($user->username && Hash::check($credentials['password'], $user->password)) {
-            $user->token = Str::random(60);
-            $user->save();
-            return response()->json([
-                'message' => 'Login successful',
-                'token' => $user->token,
-            ]);
-        }
-        return response([
-            'message' => 'Provided email address or password is incorrect!'
-        ], 422);
+        $user->token = Str::random(60);
+        $user->save();
+        return [
+            'message' => 'Login successful',
+            'token' => $user->token,
+        ];
     }
 
     public function logout(Request $request) {
-        $token = $request->bearerToken();
+        $user = AuthService::getUserByToken($request);
 
-        $user = User::where('token', $token)->first();
-
-        if ($user) {
-            $user->token = null;
-            $user->save();
-
-            return response()->json([
-                'message' => 'Logout successful',
-            ]);
+        if (!$user) {
+            return ['error' => 'User not found or already logged out',];
         }
 
-        return response()->json([
-            'error' => 'User not found or already logged out',
-        ], 404);
+        $user->token = null;
+        $user->save();
+
+        return [
+            'message' => 'Logout successful',
+        ];
     }
 }

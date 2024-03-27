@@ -7,16 +7,18 @@ columns:
         label: ID
         type: number
         searchable: true
-    datum_prichodu:
-        label: Dátum príchodu
+    arrival_date:
+        label: Arrival Date
         type: datetime
         searchable: true
-    user_id:
-        label: Užívateľ ID
-        type: number
+    user:
+        label: User
+        relation: user
+        select: username
         searchable: true
-    meskanie:
-        label: Meskanie
+        sortable: true
+    delay:
+        label: Delay
         type: number
         searchable: false
 

@@ -37,38 +37,7 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        require_once __DIR__ . '/routes.php';
-        $this->app->view->addNamespace('appuser.user', base_path() . '/plugins/appuser/user/resources/views');
-        $this->extendFormFields();
-    }
-
-    public function extendFormFields()
-    {
-        Event::listen('backend.form.extendFields', function($widget) {
-            if (!$widget->getController() instanceof \AppUser\User\Http\Controllers\UsersController) {
-                return;
-            }
-
-            if (!$widget->model instanceof \AppUser\User\Models\User) {
-                return;
-            }
-
-            // Customize the form fields here
-            $widget->addFields([
-                'password' => [
-                    'type' => 'password',
-                    'label' => 'Password',
-                    'span' => 'full',
-                    'tab' => 'AppUser.User::lang.user.tab.settings',
-                ],
-                'password_confirmation' => [
-                    'type' => 'password',
-                    'label' => 'Password Confirmation',
-                    'span' => 'full',
-                    'tab' => 'AppUser.User::lang.user.tab.settings',
-                ],
-            ]);
-        });
+        //
     }
 
     /**
@@ -107,8 +76,6 @@ class Plugin extends PluginBase
      */
     public function registerNavigation()
     {
-        // return []; // Remove this line to activate
-
         return [
             'user' => [
                 'label' => 'Users',

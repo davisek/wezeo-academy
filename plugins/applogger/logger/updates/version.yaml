@@ -1,4 +1,6 @@
 v1.0.1: First version of Logger
 v1.0.6:
     - 2024_03_24_000002_create_logs_table.php
-
+v1.0.7:
+    - Updated names
+    - 2024_03_27_000003_create_logs_table.php

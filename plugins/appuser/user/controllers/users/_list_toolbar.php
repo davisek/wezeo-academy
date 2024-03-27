@@ -5,7 +5,7 @@
 <!--        <i class="icon-plus"></i>-->
 <!--        --><?php //= __("New :name", ['name' => 'User']) ?>
 <!--    </a>-->
-
+<!---->
 <!--    <div class="toolbar-divider"></div>-->
 
     <?php if (BackendAuth::userHasAccess('appuser.user.manage_users')): ?>

@@ -9,13 +9,12 @@ use Response;
 class CheckAuth {
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->bearerToken();
-
-        $user = AuthService::getUserByToken($token);
+        $user = AuthService::getUserByToken($request);
 
         if (!$user) {
             return Response::make('Unauthorized', 401);
         }
+
         return $next($request);
     }
 }

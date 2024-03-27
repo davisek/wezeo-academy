@@ -13,6 +13,9 @@ class Plugin extends PluginBase
     /**
      * pluginDetails about this plugin.
      */
+
+    public $require = ["AppUser.User"];
+
     public function pluginDetails()
     {
         return [
