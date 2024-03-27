@@ -1,6 +1,7 @@
 <?php
 namespace AppSlack\Slack\Http\Controllers;
 
+use AppSlack\Slack\Http\Resources\ReactionResource;
 use AppSlack\Slack\Models\Emoji;
 use AppSlack\Slack\Models\Message;
 use AppSlack\Slack\Models\Reaction;
@@ -31,6 +32,9 @@ class ReactionController extends Controller
             'user_id' => $currentUser->id,
             'emoji_id' => $emojiId
         ]);
-        return $reaction;
+        return [
+            'message' => 'You replayed to a message.',
+            new ReactionResource($reaction)
+        ];
     }
 }

@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 
 class EmojiController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         return Emoji::all();
     }
 }

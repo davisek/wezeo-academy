@@ -26,6 +26,7 @@ class Emoji extends Model
      * @var array rules for validation
      */
     public $rules = [
-        'character' => 'required'
+        'character' => 'required|string',
+        'description' => 'string'
     ];
 }

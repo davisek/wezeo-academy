@@ -28,5 +28,9 @@ class Reaction extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'user_id' => 'required|numeric',
+        'message_id' => 'required|numeric',
+        'emoji_id' => 'required|numeric',
+    ];
 }

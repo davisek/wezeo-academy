@@ -33,5 +33,5 @@ class Chat extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = ['name' => 'string'];
 }

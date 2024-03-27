@@ -10,10 +10,10 @@ Route::group(['prefix' => 'api/v2'], function () {
 
         Route::get('chats', [ChatController::class, 'index']);
         Route::post('chat/new', [ChatController::class, 'store']);
+        Route::post('chat/name', [ChatController::class, 'update']);
 
         Route::get('messages/{chat}', [MessageController::class, 'index']);
         Route::post('message/new', [MessageController::class, 'store']);
-
 
         Route::post('reaction/new', [ReactionController::class, 'store']);
     });

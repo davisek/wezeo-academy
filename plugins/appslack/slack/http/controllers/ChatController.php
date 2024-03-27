@@ -1,6 +1,7 @@
 <?php
 namespace AppSlack\Slack\Http\Controllers;
 
+use AppSlack\Slack\Http\Resources\ChatResource;
 use AppSlack\Slack\Models\Chat;
 use AppUser\User\Models\User;
 use AppUser\User\Services\AuthService;
@@ -27,7 +28,7 @@ class ChatController extends Controller
             ];
         });
 
-        return response()->json($chatsData);
+        return $chatsData;
     }
 
     public function store(Request $request) {
@@ -48,6 +49,32 @@ class ChatController extends Controller
         $chat->name = "New Chat";
         $chat->save();
         $chat->users()->attach([$currentUser->id, $withUser->id]);
-        return $chat;
+        return [
+            'message' => 'Chat created successfully.',
+            new ChatResource($chat)
+        ];
+    }
+
+    public function update(Request $request) {
+        $user = AuthService::getUser();
+        $data['name'] = $request->input('name');
+        $data['id'] = $request->input('id');
+
+        $currentChat = Chat::find($data['id']);
+        if (!$currentChat) {
+            return response(['message' => 'Chat not found.'], 404);
+        }
+
+        $isUserInChat = $currentChat->users()->where('id', $user->id)->exists();
+        if (!$isUserInChat) {
+            return response(['message' => 'You are not a participant in this chat.'], 403);
+        }
+
+        $currentChat->name = $data['name'];
+        $currentChat->save();
+        return [
+            'message' => 'Chat updated successfully.',
+            new ChatResource($currentChat)
+        ];
     }
 }

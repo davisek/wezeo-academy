@@ -37,5 +37,10 @@ class Message extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'parent_id' => 'numeric',
+        'chat_id' => 'numeric|required',
+        'user_id' => 'numeric|required',
+        'text' => 'string',
+    ];
 }

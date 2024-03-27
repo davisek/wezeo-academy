@@ -21,5 +21,8 @@ class ChatUser extends Model
     /**
      * @var array rules for validation
      */
-    public $rules = [];
+    public $rules = [
+        'chat_id' => 'numeric|required',
+        'user_id' => 'numeric|required'
+    ];
 }
