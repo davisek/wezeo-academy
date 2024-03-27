@@ -1,0 +1,15 @@
+v1.0.1: First version of Slack
+v1.0.2:
+    - Migrating Tables
+    - 01_create_chats_table.php
+    - 02_create_messages_table.php
+    - 03_create_reactions_table.php
+    - 04_create_chat_users_table.php
+v1.0.3:
+    - Updating and Migrating Table
+    - 05_create_emoji_table.php
+    - 06_create_reactions_table.php
+v1.0.4:
+    - Updating Table Reactions
+    - 07_create_reactions_table.php
+

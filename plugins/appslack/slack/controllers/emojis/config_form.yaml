@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Emoji
+
+# Model Form Field configuration
+form: $/appslack/slack/models/emoji/fields.yaml
+
+# Model Class name
+modelClass: AppSlack\Slack\Models\Emoji
+
+# Default redirect location
+defaultRedirect: appslack/slack/emojis
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: appslack/slack/emojis/update/:id
+    redirectClose: appslack/slack/emojis
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: appslack/slack/emojis
+    redirectClose: appslack/slack/emojis
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title
