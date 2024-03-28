@@ -23,36 +23,15 @@ class MessageController extends Controller
             return response(['message' => 'Chat not found or access denied'], 404);
         }
 
-        // Mapovanie dát
+        // Data maping
         $formattedMessages = $messages->map(function ($message) {
-            $reactions = $message->reactions->map(function ($reaction) {
-                return [
-                    'emoji' => $reaction->emoji->character,
-                    'username' => $reaction->user->username,
-                ];
-            });
+            $reactions = $this->mapReactions($message->reactions);
+            $files = $this->mapFiles($message->files);
 
-            $files = $message->files->map(function ($file) {
-                return [
-                    'url' => $file->getPath(),
-                    'name' => $file->file_name,
-                ];
-            });
             // Maping of replies if hierarchy is needed
             $replies = $message->replies->map(function ($reply) {
-                $replyReactions = $reply->reactions->map(function ($reaction) {
-                    return [
-                        'emoji' => $reaction->emoji->character,
-                        'username' => $reaction->user->username,
-                    ];
-                });
-
-                $replyFiles = $reply->files->map(function ($file) {
-                    return [
-                        'url' => $file->getPath(),
-                        'name' => $file->file_name,
-                    ];
-                });
+                $replyReactions = $this->mapReactions($reply->reactions);
+                $replyFiles = $this->mapFiles($reply->files);
 
                 return [
                     'id' => $reply->id,
@@ -63,6 +42,7 @@ class MessageController extends Controller
                 ];
             });
             // End of mapping replies
+
             if ($message->parent_id != null && $replies->isEmpty()) {
                 return null;
             } else {
@@ -79,6 +59,24 @@ class MessageController extends Controller
         })->filter();
 
         return $formattedMessages;
+    }
+
+    private function mapReactions($reactions) {
+        return $reactions->map(function ($reaction) {
+            return [
+                'emoji' => $reaction->emoji->character,
+                'username' => $reaction->user->username,
+            ];
+        });
+    }
+
+    private function mapFiles($files) {
+        return $files->map(function ($file) {
+            return [
+                'url' => $file->getPath(), // Uistite sa, že to nevytvára samostatný dotaz pre každé volanie
+                'name' => $file->file_name,
+            ];
+        });
     }
 
     public function store(Request $request) {

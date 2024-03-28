@@ -117,6 +117,7 @@ return [
 
         // Package Service Providers...
         // Illuminate\Html\HtmlServiceProvider::class, // Example
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ]),
 
