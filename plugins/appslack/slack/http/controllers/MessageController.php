@@ -1,6 +1,7 @@
 <?php
 namespace AppSlack\Slack\Http\Controllers;
 
+use AppSlack\Slack\Http\Resources\MessageResource;
 use AppSlack\Slack\Models\Chat;
 use AppSlack\Slack\Models\Message;
 use AppUser\User\Services\AuthService;
@@ -10,98 +11,24 @@ use Illuminate\Http\Request;
 class MessageController extends Controller
 {
     public function index($chat_id) {
-        $currentUserId = AuthService::getUser()->id;
         $messages = Message::where('chat_id', $chat_id)
             ->with('user', 'reactions.emoji', 'replies', 'parent', 'files')
             ->get();
 
-        $chat = Chat::whereHas('users', function($query) use ($currentUserId) {
-            $query->where('id', $currentUserId);
-        })->find($chat_id);
+        AuthService::getUser()->chats()->findOrFail($chat_id);
 
-        if (!$chat) {
-            return response(['message' => 'Chat not found or access denied'], 404);
-        }
-
-        // Data maping
-        $formattedMessages = $messages->map(function ($message) {
-            $reactions = $this->mapReactions($message->reactions);
-            $files = $this->mapFiles($message->files);
-
-            // Maping of replies if hierarchy is needed
-            $replies = $message->replies->map(function ($reply) {
-                $replyReactions = $this->mapReactions($reply->reactions);
-                $replyFiles = $this->mapFiles($reply->files);
-
-                return [
-                    'id' => $reply->id,
-                    'text' => $reply->text,
-                    'username' => $reply->user->username,
-                    'reactions' => $replyReactions,
-                    'files' => $replyFiles,
-                ];
-            });
-            // End of mapping replies
-
-            if ($message->parent_id != null && $replies->isEmpty()) {
-                return null;
-            } else {
-                return [
-                    "id" => $message->id,
-                    "username" => $message->user->username,
-                    "text" => $message->text,
-                    "parent_id" => $message->parent_id,
-                    "reactions" => $reactions,
-                    "replies" => $replies,
-                    "files" => $files,
-                ];
-            }
-        })->filter();
-
-        return $formattedMessages;
-    }
-
-    private function mapReactions($reactions) {
-        return $reactions->map(function ($reaction) {
-            return [
-                'emoji' => $reaction->emoji->character,
-                'username' => $reaction->user->username,
-            ];
-        });
-    }
-
-    private function mapFiles($files) {
-        return $files->map(function ($file) {
-            return [
-                'url' => $file->getPath(), // Uistite sa, že to nevytvára samostatný dotaz pre každé volanie
-                'name' => $file->file_name,
-            ];
-        });
+        return MessageResource::collection($messages);
     }
 
     public function store(Request $request) {
-        $currentUserId = AuthService::getUser()->id;
-        $chat = Chat::find($request->input('chat_id'));
-        if (!$chat) {
-            return response(['message' => 'Chat not found'], 404);
-        }
+        $user = AuthService::getUser();
+        $chat = Chat::findOrFail($request->input('chat_id'));
 
-        $userIsInChat = $chat->users()->where('id', $currentUserId)->exists();
-        if (!$userIsInChat) {
-            return response(['message' => 'User is not a member of the chat'], 403);
-        }
-
-        // Control if its reply
-        if ($request->has('parent_id')) {
-            $parentMessage = Message::find($request->input('parent_id'));
-            if (!$parentMessage || $parentMessage->chat_id != $chat->id) {
-                return response()->json(['message' => 'Parent message not found or does not belong to the same chat'], 404);
-            }
-        }
+        $chat->users()->where('id', $user->id)->firstOrFail();
 
         $message = new Message([
             'chat_id' => $request->input('chat_id'),
-            'user_id' => $currentUserId,
+            'user_id' => $user->id,
             'parent_id' => $request->input('parent_id', null),
             'text' => $request->input('text', ''),
         ]);

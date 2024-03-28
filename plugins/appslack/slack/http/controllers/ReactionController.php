@@ -17,10 +17,7 @@ class ReactionController extends Controller
         $messageId = $request->input('message_id');
         $emojiId = $request->input('emoji_id');
 
-        $message = Message::find($messageId);
-        if (!$message) {
-            return response(['message' => 'Message not found.'], 404);
-        }
+        $message = Message::findOrFail($messageId);
 
         $userIsInChat = $message->chat->users()->where('id', $currentUser->id)->exists();
         if (!$userIsInChat) {
@@ -33,7 +30,7 @@ class ReactionController extends Controller
             'emoji_id' => $emojiId
         ]);
         return [
-            'message' => 'You replayed to a message.',
+            'message' => 'You replied to a message.',
             new ReactionResource($reaction)
         ];
     }

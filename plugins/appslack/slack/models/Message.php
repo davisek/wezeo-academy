@@ -38,7 +38,7 @@ class Message extends Model
      * @var array rules for validation
      */
     public $rules = [
-        'parent_id' => 'numeric',
+        'parent_id' => 'nullable|numeric',
         'chat_id' => 'numeric|required',
         'user_id' => 'numeric|required',
         'text' => 'string',

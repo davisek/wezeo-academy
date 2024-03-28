@@ -8,8 +8,8 @@ v1.0.2:
 v1.0.3:
     - Updating and Migrating Table
     - 05_create_emoji_table.php
-    - 06_create_reactions_table.php
+    - 06_update_emoji_reactions_table.php
 v1.0.4:
     - Updating Table Reactions
-    - 07_create_reactions_table.php
+    - 07_reactions_rename_emoji_to_emoji_id.php
 

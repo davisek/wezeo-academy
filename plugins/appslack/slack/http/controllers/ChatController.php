@@ -12,37 +12,21 @@ class ChatController extends Controller
 {
     public function index() {
         $user = AuthService::getUser();
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
 
-        $chats = $user->chats()->with('users')->get();
-
-        $chatsData = $chats->map(function ($chat) {
-            return [
-                'chat_id' => $chat->id,
-                'chat_name' => $chat->name,
-                'participants' => $chat->users->map(function ($user) {
-                    return ['user_id' => $user->id, 'name' => $user->username];
-                })
-            ];
-        });
-
-        return $chatsData;
+        $chats = $user->chats()->get();
+        return ChatResource::collection($chats);
     }
 
     public function store(Request $request) {
         $currentUser = AuthService::getUser();
         $user_id = $request->input('user_id');
-        $withUser = User::where('id', $user_id)->first();
-        if (!$withUser) {
-            return Response(['message' => 'None of the users have this ID.'], 404);
-        }
-        $currentUserChats = $currentUser->chats()->pluck('id');
-        $commonChat = $withUser->chats()->whereIn('id', $currentUserChats)->first();
+        $withUser = User::where('id', $user_id)->firstOrFail();
 
-        if ($commonChat) {
-            return $this->index();
+        $currentUserChats = $currentUser->chats()->pluck('id');
+        $isThereChatAlready = $withUser->chats()->whereIn('id', $currentUserChats)->first();
+
+        if ($isThereChatAlready) {
+            return new ChatResource($isThereChatAlready);
         }
 
         $chat = new Chat;
@@ -60,15 +44,9 @@ class ChatController extends Controller
         $data['name'] = $request->input('name');
         $data['id'] = $request->input('id');
 
-        $currentChat = Chat::find($data['id']);
-        if (!$currentChat) {
-            return response(['message' => 'Chat not found.'], 404);
-        }
+        $currentChat = Chat::where('id', $data['id'])->firstOrFail();
 
-        $isUserInChat = $currentChat->users()->where('id', $user->id)->exists();
-        if (!$isUserInChat) {
-            return response(['message' => 'You are not a participant in this chat.'], 403);
-        }
+        $currentChat->users()->where('id', $user->id)->firstOrFail();
 
         $currentChat->name = $data['name'];
         $currentChat->save();
