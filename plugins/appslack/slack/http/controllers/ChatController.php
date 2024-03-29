@@ -17,9 +17,9 @@ class ChatController extends Controller
         return ChatResource::collection($chats);
     }
 
-    public function store(Request $request) {
+    public function store() {
         $currentUser = AuthService::getUser();
-        $user_id = $request->input('user_id');
+        $user_id = input('user_id');
         $withUser = User::where('id', $user_id)->firstOrFail();
 
         $currentUserChats = $currentUser->chats()->pluck('id');
@@ -39,10 +39,10 @@ class ChatController extends Controller
         ];
     }
 
-    public function update(Request $request) {
+    public function update() {
         $user = AuthService::getUser();
-        $data['name'] = $request->input('name');
-        $data['id'] = $request->input('id');
+        $data['name'] = input('name');
+        $data['id'] = input('id');
 
         $currentChat = Chat::where('id', $data['id'])->firstOrFail();
 

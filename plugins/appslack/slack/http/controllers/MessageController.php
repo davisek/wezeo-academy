@@ -20,23 +20,23 @@ class MessageController extends Controller
         return MessageResource::collection($messages);
     }
 
-    public function store(Request $request) {
+    public function store() {
         $user = AuthService::getUser();
-        $chat = Chat::findOrFail($request->input('chat_id'));
+        $chat = Chat::findOrFail(input('chat_id'));
 
         $chat->users()->where('id', $user->id)->firstOrFail();
 
         $message = new Message([
-            'chat_id' => $request->input('chat_id'),
+            'chat_id' => input('chat_id'),
             'user_id' => $user->id,
-            'parent_id' => $request->input('parent_id', null),
-            'text' => $request->input('text', ''),
+            'parent_id' => input('parent_id', null),
+            'text' => input('text', ''),
         ]);
 
         $message->save();
 
-        if ($request->hasFile('file')) {
-            $message->files()->create(['data' => $request->file('file')]);
+        if (request()->hasFile('file')) {
+            $message->files()->create(['data' => request()->file('file')]);
         }
 
         return ['message' => 'Message was successfully sent!'];

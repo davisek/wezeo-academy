@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 
 class ReactionController extends Controller
 {
-    public function store(Request $request)
+    public function store()
     {
         $currentUser = AuthService::getUser();
-        $messageId = $request->input('message_id');
-        $emojiId = $request->input('emoji_id');
+        $messageId = input('message_id');
+        $emojiId = input('emoji_id');
 
         $message = Message::findOrFail($messageId);
 
